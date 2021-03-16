@@ -1,0 +1,2 @@
+swift_hash_path_suffix = RK6Qbe4e4RVmPOu2NrZw
+swift_hash_path_prefix = WWyi8SeTW7gnJusiRtLn
