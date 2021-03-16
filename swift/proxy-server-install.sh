@@ -7,70 +7,68 @@ if [ "$EUID" -ne 0 ]
 fi
 
 # Get config parameter
-while true
-do
-    while true
+declare -A configArray
+
+getConfig(){
+
+    declare tmpInput
+    declare doneConfig=0
+
+    configArray[port]=8080
+    configArray[user]="swift"
+    configArray[swift_directory]="/etc/swift"
+    configArray[auth_url]="http://localhost:5000"
+    configArray[memcached_server]="http://localhost:11211"
+    configArray[project_domain_id]="default"
+    configArray[user_domain_id]="default"
+    configArray[project_name]="service"
+    configArray[keystone_user]="swift"
+    configArray[keystone_pass]="vts"
+
+    while [ "$doneConfig" -eq 0 ];
+    do
+        for parameter in  ${!configArray[@]}
+        do 
+            read -p "Enter value for ${parameter}[${configArray[$parameter]}]: " tmpInput
+            if [ -z "${tmpInput}" ]; 
+                then
+                    echo "value of parameter \"$parameter\" will be set to value \"${configArray[$parameter]}\""
+                else
+                    configArray[$parameter]=$tmpInput
+            fi
+            echo ""
+        done
+
+        echo ""
+        echo "Following config parameters will be use in deploying proxy server"
+        for parameter in ${!configArray[@]}
         do
-        read -p "Enter listening port for proxy[8080]:" port
+            echo "${parameter}: ${configArray[$parameter]}"
+        done
+        echo ""
 
-        if [ -z $port ]; then
-            echo "port value will be default value \"8080\""
-            port=8080
-            break
-        fi
-
-        if [ $port -lt 1 -o $port -gt 65535 ]; then
-            echo "Invalid port"
-            else
-            break
-        fi
+        while true
+        do
+            read -p "Do you want to proceed[Y/N]:"
+            case ${REPLY} in
+                Y)
+                    doneConfig=1
+                    break
+                    ;;
+                N)
+                    break
+                    ;;
+                *)
+                    echo "Invalid Input"
+                    ;;         
+            esac
+        done
     done
+}
 
-    read -p "Enter proxy user[swift]:" user
-    if [ -z "$user" ]; then
-        echo "user value will be default value \"swift\""
-    fi
+getConfig
 
-
-    while true
-    do
-        read -p "Enter swift directory[/etc/swift]:" configDir
-
-        if [ -z $configDir ] then
-            mkdir -p /etc/swift
-            configDir="/etc/swift"
-            echo "swift directory value will be default value \"/etc/swift\""
-            break
-        fi
-
-        if [ ! -d "$configDir" ]; then
-            echo "This path doesn't exist or doesn't point to a directory"
-            else
-            break
-        fi
-    done
-
-    echo "This server will have these following configuration:"
-    echo "Litening port: ${port}"
-    echo "Proxy User: ${user}"
-    echo "Swift directory: $configDir"
-    read -p "Are you sure you want to keep these configuration[Y/N]"
-    while true
-    do
-        case $REPLY in
-            "Y")
-                break
-                ;;
-            "N")
-                break
-                ;;
-            "*")
-                echo "Invalid input"
-                ;;
-        esac
-    done
-done
-
+mkdir -p "${configArray[swift_directory]}"
 # update repository
 # apt update
 
