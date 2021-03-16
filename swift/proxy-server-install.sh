@@ -87,9 +87,12 @@ configDir=${configArray[swift_directory]}
 proxyConfigPath="${configArray[swift_directory]}/proxy-server.conf"
 swiftConfigPath="${configArray[swift_directory]}/swift.conf"
 
-rm -f "$proxyConfigPath"
 mkdir -p "$configDir"
+
+rm -f "$proxyConfigPath"
 touch "$proxyConfigPath"
+rm -f "$swiftConfigPath"
+touch "$swiftConfigPath"
 
 cat <<EOF >> $proxyConfigPath
 [DEFAULT]
