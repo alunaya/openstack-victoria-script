@@ -32,7 +32,7 @@ getConfig(){
     do
         for parameter in  ${!configArray[@]}
         do 
-            read -p "Enter value for ${parameter}[${configArray[$parameter]}]: " tmpInput
+            read -p "Enter value for ${parameter} [${configArray[$parameter]}]: " tmpInput
             if [ -z "${tmpInput}" ]; 
                 then
                     echo "value of parameter \"$parameter\" will be set to value \"${configArray[$parameter]}\""
