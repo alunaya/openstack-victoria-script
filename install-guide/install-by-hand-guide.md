@@ -2,6 +2,7 @@
 1. [Cấu hình controller node](#cấu-hình-controller-node)
 2. [Cấu hình proxy server](#cấu-hình-proxy-server)
 3. [Cấu hình storage server](#cấu-hình-storage-server)
+4. [Tạo Ring cho Swift](#tạo-ring-cho-swift)
 
 # Cấu hình controller node
 Cơ chế xác thực (authentication) và ủy quyền (authorization) của Swift thường dựa trên Keystone (Identity service). Tuy nhiên, không giống như các dịch vụ khác, nó cũng cung cấp một cơ chế nội bộ cho phép nó hoạt động mà không cần bất kỳ dịch vụ OpenStack nào khác. Trước khi cấu hình Swift, bạn phải tạo thông tin xác thực dịch vụ và API endpoint.
@@ -391,3 +392,5 @@ mkdir -p /var/cache/swift
 chown -R root:swift /var/cache/swift
 chmod -R 775 /var/cache/swift
 ```
+
+# Tạo Ring cho Swift
